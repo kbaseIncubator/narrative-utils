@@ -1,0 +1,1 @@
+export { NarrativeConfig } from './config';
