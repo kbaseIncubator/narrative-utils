@@ -1,0 +1,40 @@
+{
+  "name": "@kbase/narrative-utils",
+  "version": "0.0.2",
+  "description": "Utility modules and functions for the Jupyterlab Narrative",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "clean": "rimraf lib",
+    "prepare": "npm run clean && npm run build",
+    "test": "mocha -R spec --ui bdd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kbaseIncubator/narrative-utils.git"
+  },
+  "author": "DoE KBase Project",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/kbaseIncubator/narrative-utils/issues"
+  },
+  "homepage": "https://github.com/kbaseIncubator/narrative-utils#readme",
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^11.13.0",
+    "chai": "^4.2.0",
+    "chai-dom": "^1.8.1",
+    "jsdom": "^14.0.0",
+    "karma": "^4.0.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-mocha": "^1.3.0",
+    "mocha": "^6.0.2",
+    "rimraf": "^2.6.3",
+    "tslint": "^5.14.0",
+    "typescript": "^3.4.1"
+  }
+}
