@@ -9,7 +9,7 @@ interface IMapItem {
     expires: number  // ms since epoch
 };
 
-interface ITimedMap {
+class ITimedMap {
     [key: string]: IMapItem
 };
 

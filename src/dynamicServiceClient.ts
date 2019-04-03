@@ -1,51 +1,56 @@
-import * as Promise from 'bluebird';
 import {
-    KBaseJsonRpcClient
-} from './jsonRpcClient';
-
+    KBaseServiceClient
+} from './serviceClient';
+import {
+    TimedMap
+} from './timedMap';
 import {
     NarrativeConfig
 } from './config';
 
 class Cache {
     serviceWizardUrl: string;
-    serviceWizardClient: KBaseJsonRpcClient;
+    serviceWizardClient: KBaseServiceClient;
+    cacheMap: TimedMap;
 
-    constructor() {
+    constructor(cacheTime: number) {
         let cfg: NarrativeConfig = new NarrativeConfig();
         this.serviceWizardUrl = cfg.url('service_wizard');
-        this.serviceWizardClient = new KBaseJsonRpcClient();
+        this.serviceWizardClient = new KBaseServiceClient('service_wizard', this.serviceWizardUrl, null);
+        this.cacheMap = new TimedMap(cacheTime);
     }
 
     getCachedUrl(module: string, authToken: string, version?: string): Promise<any> {
-
-        return this.serviceWizardClient.request({
-            url: this.serviceWizardUrl,
-            module: 'ServiceWizard',
-            func: 'get_service_status',
-            params: [{
+        let mapped = this.cacheMap.get(module);
+        if (mapped !== null) {
+            return new Promise((resolve) => resolve(mapped));
+        }
+        else {
+            return this.serviceWizardClient.call('get_service_status', [{
                 module_name: module,
                 version: version
-            }],
-            rpcContext: null,
-            timeout: 30,
-            authorization: authToken
-        });
-
+            }])
+            .then((result) => {
+                let url = result.url;
+                this.cacheMap.put(module, url);
+                return url;
+            });
+        }
     }
 }
 
-export class DynamicServiceClient {
-    readonly module: string;
+export class KBaseDynamicServiceClient extends KBaseServiceClient {
     cache: Cache;
-    authToken: string;
     constructor(module: string, authToken: string) {
-        this.module = module;
-        this.authToken = authToken;
-        this.cache = new Cache();
+        super(module, null, authToken);
+        this.cache = new Cache(300000);
     }
 
-    callFunc(method: string, params: Array<any>): Promise<any> {
-        return this.cache.getCachedUrl(this.module, this.authToken);
+    call(method: string, params: Array<any>): Promise<any> {
+        return this.cache.getCachedUrl(this.module, this.authToken)
+            .then((url) => {
+                this.url = url;
+                return super.call(method, params);
+            });
     }
 }

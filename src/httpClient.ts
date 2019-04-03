@@ -183,6 +183,11 @@ export class HttpClient {
         return <Promise<Response>>new Promise((resolve, reject, onCancel) => {
             const xhr: XMLHttpRequest = new XMLHttpRequest();
             xhr.onload = () => {
+                console.log("HERE");
+                console.log(xhr.status);
+                console.log(xhr.response);
+                console.log(xhr.responseType);
+                console.log(xhr);
                 resolve(<Response>{
                     status: xhr.status,
                     response: xhr.response,

@@ -1,19 +1,19 @@
-import {
-    HttpClient,
-    GeneralError,
-    TimeoutError,
-    AbortError,
-    RequestOptions,
-    HttpHeader
-} from './HttpClient';
-import * as Promise from 'bluebird';
+// import {
+//     HttpClient,
+//     GeneralError,
+//     TimeoutError,
+//     AbortError,
+//     RequestOptions,
+//     HttpHeader
+// } from './HttpClient';
+// import * as Promise from 'bluebird';
 
 export interface KBaseJsonRpcRequestOptions {
     url: string,
     module: string,
     func: string,
-    params: any,
-    rpcContext: any,
+    params: Array<any>,
+    rpcContext?: any,
     timeout: number,
     authorization: string
 }
@@ -61,78 +61,112 @@ export class KBaseJsonRpcError extends Error {
 
 export class KBaseJsonRpcClient {
     constructor() {
-
     }
 
-    isGeneralError(error: GeneralError) {
-        return (error instanceof GeneralError)
-    }
+    // isGeneralError(error: GeneralError) {
+    //     return (error instanceof GeneralError);
+    // }
 
     request(options: KBaseJsonRpcRequestOptions) : Promise<any> {
-        let rpc : KBaseJsonRpcRequest = {
+        let rpcData : KBaseJsonRpcRequest = {
             version: '1.1',
             method: options.module + '.' + options.func,
             id: String(Math.random()).slice(2),
             params: options.params,
-        }
+        };
         if (options.rpcContext) {
-            rpc.context = options.rpcContext;
+            rpcData.context = options.rpcContext;
         }
-
-        let header : HttpHeader = new HttpHeader();
-        if (options.authorization) {
-            header.setHeader('authorization', options.authorization);
-        }
-
-        let requestOptions : RequestOptions = {
+        let request : RequestInit = {
             method: 'POST',
-            url: options.url,
-            timeout: options.timeout,
-            data: JSON.stringify(rpc),
-            header: header
-        }
-
-        let httpClient = new HttpClient();
-        return httpClient.request(requestOptions)
-            .then(function (result) {
-                try {
-                    return JSON.parse(result.response);
-                } catch (ex) {
-                    throw new KBaseJsonRpcError({
-                        code: 'parse-error',
-                        message: ex.message,
-                        detail: 'The response from the service could not be parsed',
-                        data: {
-                            responseText: result.response
-                        }
-                    });
-                }
-            })
-            .catch(GeneralError, (err: GeneralError) => {
-                throw new KBaseJsonRpcError({
-                    code: 'connection-error',
-                    message: err.message,
-                    detail: 'An error was encountered communicating with the service',
-                    data: {}
-                });
-            })
-            .catch(TimeoutError, (err: TimeoutError) => {
-                throw new KBaseJsonRpcError({
-                    code: 'timeout-error',
-                    message: err.message,
-                    detail: 'There was a timeout communicating with the service',
-                    data: {}
-                });
-            })
-            .catch(AbortError, (err: AbortError) => {
-                throw new KBaseJsonRpcError({
-                    code: 'abort-error',
-                    message: err.message,
-                    detail: 'The connection was aborted while communicating with the s ervice',
-                    data: {}
-                });
-            });
-
+            cache: 'no-cache',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': options.authorization
+            },
+            redirect: 'follow',
+            referrer: 'no-referrer',
+            body: JSON.stringify(rpcData)
+        };
+        return fetch(options.url, request)
+            .then(this.handleFetchErrors)
+            .then(response => response.json());
     }
+
+    handleFetchErrors(response: any) {
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response;
+    }
+
+
+    // requestOld(options: KBaseJsonRpcRequestOptions) : Promise<any> {
+    //     let rpc : KBaseJsonRpcRequest = {
+    //         version: '1.1',
+    //         method: options.module + '.' + options.func,
+    //         id: String(Math.random()).slice(2),
+    //         params: options.params,
+    //     }
+    //     if (options.rpcContext) {
+    //         rpc.context = options.rpcContext;
+    //     }
+
+    //     let header : HttpHeader = new HttpHeader();
+    //     if (options.authorization) {
+    //         header.setHeader('authorization', options.authorization);
+    //     }
+
+    //     let requestOptions : RequestOptions = {
+    //         method: 'POST',
+    //         url: options.url,
+    //         timeout: options.timeout,
+    //         data: JSON.stringify(rpc),
+    //         header: header
+    //     }
+
+    //     let httpClient = new HttpClient();
+    //     console.log(requestOptions);
+    //     return httpClient.request(requestOptions)
+    //         .then(function (result) {
+    //             try {
+    //                 return JSON.parse(result.response);
+    //             } catch (ex) {
+    //                 throw new KBaseJsonRpcError({
+    //                     code: 'parse-error',
+    //                     message: ex.message,
+    //                     detail: 'The response from the service could not be parsed',
+    //                     data: {
+    //                         responseText: result.response
+    //                     }
+    //                 });
+    //             }
+    //         })
+    //         .catch(GeneralError, (err: GeneralError) => {
+    //             throw new KBaseJsonRpcError({
+    //                 code: 'connection-error',
+    //                 message: err.message,
+    //                 detail: 'An error was encountered communicating with the service',
+    //                 data: {}
+    //             });
+    //         })
+    //         .catch(TimeoutError, (err: TimeoutError) => {
+    //             throw new KBaseJsonRpcError({
+    //                 code: 'timeout-error',
+    //                 message: err.message,
+    //                 detail: 'There was a timeout communicating with the service',
+    //                 data: {}
+    //             });
+    //         })
+    //         .catch(AbortError, (err: AbortError) => {
+    //             throw new KBaseJsonRpcError({
+    //                 code: 'abort-error',
+    //                 message: err.message,
+    //                 detail: 'The connection was aborted while communicating with the service',
+    //                 data: {}
+    //             });
+    //         });
+
+    // }
 
 }
