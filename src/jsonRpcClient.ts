@@ -1,3 +1,6 @@
+/**
+ * Intended for internal use. For making KBase JSON-RPC requests, use either the KBaseServiceClient or KBaseDynamicServiceClient.
+ */
 export interface KBaseJsonRpcRequestOptions {
     url: string,
     module: string,
@@ -10,11 +13,17 @@ export interface KBaseJsonRpcRequestOptions {
 
 // The JSON RPC Request parameters
 // An array of  JSON objects
+/**
+ * Intended for internal use. For making KBase JSON-RPC requests, use either the KBaseServiceClient or KBaseDynamicServiceClient.
+ */
 export interface JsonRpcParam {
     [key: string]: any
 }
 
 // The entire JSON RPC request object
+/**
+ * Intended for internal use. For making KBase JSON-RPC requests, use either the KBaseServiceClient or KBaseDynamicServiceClient.
+ */
 export interface KBaseJsonRpcRequest {
     method: string,
     version: '1.1',
@@ -29,9 +38,22 @@ export interface JsonRpcErrorInfo {
     data?: any
 }
 
+/**
+ * A possible result of any KBase service call, core or dynamic.
+ */
 export class KBaseJsonRpcError extends Error implements JsonRpcErrorInfo {
+    /**
+     * The HTTP error code (likely 500, because that's the JSON-RPC stack we have).
+     */
     code: number;
+    /**
+     * The primary message from the service.
+     */
     message: string;
+    /**
+     * An optional data stack provided by the service with more error details. Typically
+     * contains a server-side stacktrace, error code, and detailed message.
+     */
     data?: any;
     constructor(errorInfo: JsonRpcErrorInfo) {
         super(errorInfo.message);
@@ -45,6 +67,9 @@ export class KBaseJsonRpcError extends Error implements JsonRpcErrorInfo {
     }
 }
 
+/**
+ * Intended for internal use. For making KBase JSON-RPC requests, use either the KBaseServiceClient or KBaseDynamicServiceClient.
+ */
 export class KBaseJsonRpcClient {
     constructor() {
     }
