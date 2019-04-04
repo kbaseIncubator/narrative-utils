@@ -28,12 +28,12 @@ describe('KBase Service Client test', () => {
             })
             .catch((err) => {
                 expect(err.message).to.equal('Internal Server Error');
-                expect(err.code).to.equal(500)
+                expect(err.code).to.equal(500);
                 expect(err.data).to.deep.contain({
                     message: 'version',
                     code: -32000,
                     name: 'Server error'
-                })
+                });
                 done();
             });
     });

@@ -70,8 +70,6 @@ export class KBaseJsonRpcClient {
             referrer: 'no-referrer',
             body: JSON.stringify(rpcData)
         };
-        // console.log("MAKING REQUEST");
-        // console.log(request);
         return fetch(options.url, request)
             .then(this.handleFetchErrors)
             .then(response => response.json())

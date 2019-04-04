@@ -7,26 +7,6 @@ import {
 import {
     NarrativeConfig
 } from './config';
-import {
-    KBaseJsonRpcError, JsonRpcErrorInfo
-} from './jsonRpcClient';
-
-/**
- * Wrapper / transformer for KBaseJsonRpcError
- */
-class UrlLookupError extends KBaseJsonRpcError {
-    originalMessage: string;
-
-    constructor(err: KBaseJsonRpcError) {
-        let errInfo: JsonRpcErrorInfo = {
-            code: err.code,
-            message: 'Unable to get Url for Dynamic Service',
-            data: err.data
-        }
-        super(errInfo);
-        this.originalMessage = err.message;
-    }
-};
 
 class Cache {
     serviceWizardUrl: string;
@@ -57,9 +37,6 @@ class Cache {
                 let url = result.url;
                 this.cacheMap.put(module, url);
                 return url;
-            })
-            .catch((err: KBaseJsonRpcError) => {
-                throw new UrlLookupError(err);
             });
         }
     }
