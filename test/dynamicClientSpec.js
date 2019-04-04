@@ -7,7 +7,10 @@ describe('KBase Dynamic Service Client test', () => {
     const service = 'NarrativeTestDynamic';
 
     it ('Should make a simple non-authenticated call', (done) => {
-        let client = new KBaseDynamicServiceClient(service, 'dev', null);
+        let client = new KBaseDynamicServiceClient({
+            module: service,
+            version: 'dev'
+        });
         client.call('sample_dyn_service_call', [{input: 'foo'}])
             .then((result) => {
                 expect(result.output).to.equal('foo');
@@ -20,7 +23,10 @@ describe('KBase Dynamic Service Client test', () => {
     });
 
     it ('Should fail reasonably when given bad parameters', (done) => {
-        let client = new KBaseDynamicServiceClient(service, 'dev', null);
+        let client = new KBaseDynamicServiceClient({
+            module: service,
+            version: 'dev',
+        });
         client.call('sample_dyn_service_call', [{foo: 'bar'}])
             .then(() => {
                 done(new Error('This should throw an error!'));
@@ -38,7 +44,10 @@ describe('KBase Dynamic Service Client test', () => {
     });
 
     it ('Should fail when a service exists but a method does not', (done) => {
-        let client = new KBaseDynamicServiceClient(service, 'dev', null);
+        let client = new KBaseDynamicServiceClient({
+            module: service,
+            version: 'dev'
+        });
         client.call('not_real', [{no: 'way'}])
             .then(() => {
                 done(new Error('This should throw an error!'));
@@ -55,7 +64,10 @@ describe('KBase Dynamic Service Client test', () => {
     });
 
     it ('Should fail when a service does not exist', (done) => {
-        let client = new KBaseDynamicServiceClient('NotAService', 'dev', null);
+        let client = new KBaseDynamicServiceClient({
+            module: 'NotAService',
+            version: 'dev'
+        });
         client.call('not_real', [])
             .then(() => {
                 done(new Error('This should throw an error!'));

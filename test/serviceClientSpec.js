@@ -7,7 +7,10 @@ describe('KBase Service Client test', () => {
     const servUrl = 'https://ci.kbase.us/services/service_wizard';
 
     it ('Should do simple, non-authed lookups', (done) => {
-        let wizardClient = new KBaseServiceClient('ServiceWizard', servUrl, null);
+        let wizardClient = new KBaseServiceClient({
+            module: 'ServiceWizard',
+            url: servUrl
+        });
         wizardClient.call('get_service_status', [{'module_name': 'NarrativeService', 'version': null}])
             .then((result) => {
                 expect(result.url).to.contain('https://ci.kbase.us');
@@ -21,7 +24,10 @@ describe('KBase Service Client test', () => {
     });
 
     it ('Should fail reasonably when given bad parameters', (done) => {
-        let wizardClient = new KBaseServiceClient('ServiceWizard', servUrl, null);
+        let wizardClient = new KBaseServiceClient({
+            module: 'ServiceWizard',
+            url: servUrl
+        });
         wizardClient.call('get_service_status', [{'module_name': 'NarrativeService'}])
             .then(() => {
                 done(new Error('Should have failed!'));
