@@ -2,7 +2,8 @@ export class NarrativeConfig {
     urls : {[key: string]: string} = {
         'workspace': 'https://ci.kbase.us/services/ws',
         'auth': 'https://ci.kbase.us/services/auth',
-        'service_wizard': 'https://ci.kbase.us/services/service_wizard'
+        'service_wizard': 'https://ci.kbase.us/services/service_wizard',
+        'narrative_method_store': 'https://ci.kbase.us/services/narrative_method_store/rpc'
     };
 
     keys : {[key: string]: string} = {

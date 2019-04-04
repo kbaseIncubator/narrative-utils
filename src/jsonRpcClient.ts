@@ -70,6 +70,8 @@ export class KBaseJsonRpcClient {
             referrer: 'no-referrer',
             body: JSON.stringify(rpcData)
         };
+        // console.log("MAKING REQUEST");
+        // console.log(request);
         return fetch(options.url, request)
             .then(this.handleFetchErrors)
             .then(response => response.json())
@@ -79,11 +81,17 @@ export class KBaseJsonRpcClient {
         if (response.ok) {
             return response;
         }
-        return response.json()
-            .then((jsonError: any) => {
-                let detail = {};
-                if ('error' in jsonError) {
-                    detail = jsonError.error;
+        return response.text()
+            .then((errText: string) => {
+                let detail: any = {};
+                try {
+                    detail = JSON.parse(errText);
+                    if ('error' in detail) {
+                        detail = detail['error'];
+                    }
+                }
+                catch {
+                    detail['message'] = errText;
                 }
                 let info: JsonRpcErrorInfo = {
                     code: response.status,

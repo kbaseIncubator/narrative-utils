@@ -1,14 +1,12 @@
 const fetch = require('node-fetch');
+global.fetch = fetch;
 const KBaseServiceClient = require('../lib/index.js').KBaseServiceClient;
 var expect = require('chai').expect;
 
 describe('KBase Service Client test', () => {
     const servUrl = 'https://ci.kbase.us/services/service_wizard';
-    beforeEach(() => {
-        global.fetch = fetch;
-    });
 
-    it ('should do simple, non-authed lookups', (done) => {
+    it ('Should do simple, non-authed lookups', (done) => {
         let wizardClient = new KBaseServiceClient('ServiceWizard', servUrl, null);
         wizardClient.call('get_service_status', [{'module_name': 'NarrativeService', 'version': null}])
             .then((result) => {
@@ -22,7 +20,7 @@ describe('KBase Service Client test', () => {
             });
     });
 
-    it ('should fail reasonably when given bad parameters', (done) => {
+    it ('Should fail reasonably when given bad parameters', (done) => {
         let wizardClient = new KBaseServiceClient('ServiceWizard', servUrl, null);
         wizardClient.call('get_service_status', [{'module_name': 'NarrativeService'}])
             .then(() => {
