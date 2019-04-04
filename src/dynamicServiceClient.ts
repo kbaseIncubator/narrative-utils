@@ -29,7 +29,10 @@ class ServiceUrlCache {
         }
         let cfg: NarrativeConfig = new NarrativeConfig();
         this.serviceWizardUrl = cfg.url('service_wizard');
-        this.serviceWizardClient = new KBaseServiceClient('ServiceWizard', this.serviceWizardUrl, null);
+        this.serviceWizardClient = new KBaseServiceClient({
+            module: 'ServiceWizard',
+            url: this.serviceWizardUrl
+        });
         this.cacheMap = new TimedMap(cacheTime);
     }
 
@@ -62,6 +65,12 @@ class ServiceUrlCache {
     }
 };
 
+export interface IKBaseDynamicServiceClientOptions {
+    module: string,
+    version?: string,
+    authToken?: string
+};
+
 /**
  * A client for talking to KBase dynamic services. This handles fetching the dynamic URL
  * and making the call like the other service client.
@@ -69,18 +78,21 @@ class ServiceUrlCache {
  */
 export class KBaseDynamicServiceClient extends KBaseServiceClient {
     cache: ServiceUrlCache;
-    serviceVersion: string;
+    serviceVersion: string = null;
 
     /**
      * @constructor
-     * @param module the name of the module to run against
-     * @param version the version of the module to use, should be one of "dev", "beta", "prod", or a Git hash
-     * @param authToken the user's auth token (optional)
      */
-    constructor(module: string, version: string, authToken?: string) {
-        super(module, null, authToken);
+    constructor(options: IKBaseDynamicServiceClientOptions) {
+        super({
+            module: options.module,
+            url: null,
+            authToken: options.authToken
+        })
         this.cache = new ServiceUrlCache(300000);
-        this.serviceVersion = version;
+        if(options.version) {
+            this.serviceVersion = options.version;
+        }
     }
 
     /**

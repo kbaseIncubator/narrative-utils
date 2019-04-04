@@ -2,6 +2,12 @@ import {
     KBaseJsonRpcClient
 } from './jsonRpcClient';
 
+export interface IKBaseServiceClientOptions {
+    module: string;
+    url: string;
+    authToken?: string;
+}
+
 /**
  * A generic client for communicating with KBase services.
  * This is useful for running commands against the core services like Workspace, Groups, Narrative Job Service, etc.
@@ -10,30 +16,26 @@ import {
  */
 export class KBaseServiceClient extends KBaseJsonRpcClient {
     readonly module: string;
-    authToken: string;
+    authToken: string = null;
     url: string;
 
     /**
      * @constructor
-     * @param module the registered module name to use with this client.
-     * @param url the URL endpoint for the service.
-     * @param authToken the user's auth token (optional for non-authenticated calls).
      */
-    constructor(module: string, url: string, authToken?: string) {
+    constructor(options: IKBaseServiceClientOptions) {
         super();
-        this.module = module;
-        if (!authToken) {
-            authToken = null;
+        this.module = options.module;
+        if (options.authToken) {
+            this.authToken = options.authToken;
         }
-        this.authToken = authToken;
-        this.url = url;
+        this.url = options.url;
     }
 
     /**
      * Make a call to the service this client is attached to.
      * @param method the method to call from the given module
      * @param params the array of parameters to pass to the method. Note that this should be wrapped as an array.
-     * @returns a Promise that should resolve into the expected results of the call. Any errors get throws as a KBaseJsonRpcError
+     * @returns a Promise that should resolve into the expected results of the call. Any errors get thrown as a KBaseJsonRpcError.
      * @see KBaseJsonRpcError
      */
     call(method: string, params: Array<any>, timeout?: number): Promise<any> {
