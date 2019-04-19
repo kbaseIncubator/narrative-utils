@@ -83,4 +83,20 @@ describe('KBase Dynamic Service Client test', () => {
                 done();
             });
     });
+
+    it ('Should handle auth tokens well', (done) => {
+        let client = new KBaseDynamicServiceClient({
+            module: service,
+            authToken: 'foo'
+        });
+        client.call('sample_dyn_service_call', [{input: 'wat'}])
+            .then((result) => {
+                expect(result.output).to.equal('wat');
+                done();
+            })
+            .catch((err) => {
+                console.log(err);
+                done(new Error('Got an error from the dynamic service client!'));
+            });
+    })
 });

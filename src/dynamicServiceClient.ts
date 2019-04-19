@@ -7,6 +7,7 @@ import {
 import {
     NarrativeConfig
 } from './config';
+import { KBaseJsonRpcError } from './jsonRpcClient';
 
 /**
  * A simple cache for dynamic service URLs. Whenever `getCachedUrl` is run, the cache is checked for the
@@ -103,7 +104,7 @@ export class KBaseDynamicServiceClient extends KBaseServiceClient {
      * errors can occur while fetching the service's URL from the service wizard.
      * @see KBaseJsonRpcError
      */
-    call(method: string, params: Array<any>): Promise<any> {
+    call(method: string, params: Array<any>): Promise<any | KBaseJsonRpcError> {
         return this.cache.getCachedUrl(this.module, this.serviceVersion)
             .then((url) => {
                 this.url = url;
