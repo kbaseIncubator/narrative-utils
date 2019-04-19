@@ -32,5 +32,7 @@ All the code is under `src/` in various `.ts` (TypeScript) modules. When adding 
 
 This is (currently) meant to be a catchall utility module for the new Narrative-Jupyterlab interface. It might eventually be broken down into sub-utilities, or more specialized things. For now, though, anything goes. Just decompose as logic dictates.
 
+Be sure to run `npm run build` and `npm run test` occcasionally to test your stuff!
+
 ### Testing
 Each added module should be accompanied by tests. This uses Mocha as the test runner and Chai as the runner language. All test specs are included under `test/`. They're expected to run in a Node environment. If your module expects some browser features, you might need to add those to the test runner. See `test/authSpec.js` for an example of using `jsdom` to dummy up a `window` and `document` feature.
