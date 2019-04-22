@@ -1,6 +1,6 @@
 {
   "name": "@kbase/narrative-utils",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Utility modules and functions for the Jupyterlab Narrative",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -38,6 +38,7 @@
     "typescript": "^3.4.1"
   },
   "dependencies": {
-    "bluebird": "^3.5.3"
+    "bluebird": "^3.5.3",
+    "moment": "^2.24.0"
   }
 }
