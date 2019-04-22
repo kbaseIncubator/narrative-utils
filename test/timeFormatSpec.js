@@ -50,6 +50,11 @@ describe('TimeFormat tests', () => {
         expect(d).to.equal('a minute ago');
     });
 
+    it('getTimeStampStr should return an exact date for over a year ago', () => {
+        let d = TF.getTimeStampStr(testISOTime, false);
+        expect(d).to.equal(testExactDayStr);
+    });
+
     it('getTimeStampStr should return null for an invalid time stamp', () => {
         expect(TF.getTimeStampStr('foo')).to.equal(null);
     });
