@@ -25,7 +25,7 @@ export function getTimeStampStr(timeStamp: string, exact: boolean) : string {
         return date.format(DATE_FORMAT);
     }
     else {
-        if (date.diff(Moment(), 'months', true) > 4) {
+        if (Math.abs(date.diff(Moment(), 'months', true)) > 4) {
             return date.format(DATE_FORMAT);
         }
         else {
