@@ -6,3 +6,5 @@ export { TimedMap } from './timedMap';
 export { KBaseJsonRpcError } from './jsonRpcClient';
 import * as TimeFormat from './timeFormat';
 export { TimeFormat };
+import * as Icon from './icon';
+export { Icon };

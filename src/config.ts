@@ -1,3 +1,15 @@
+import iconData from './assets/icons.json';
+
+export interface IIconConfigData {
+    methods: {
+        method: Array<string>,
+        app: Array<string>
+    },
+    data: {[key: string]: Array<string>},
+    colors: Array<string>,
+    colorMapping: {[key: string]: string}
+}
+
 /**
  * The main config object for the various Narrative packages.
  */
@@ -18,20 +30,23 @@ export class NarrativeConfig {
      * @private
      * @todo update to get from a config file.
      */
-    keys : {[key: string]: string} = {
-        'cookieName': 'kbase_session'
+    keys : {[key: string]: any} = {
+        cookieName: 'kbase_session',
+        icons: <IIconConfigData>iconData
     };
 
     /**
      * Return the configured value for some key.
      * @param key {string} the config key to look up.
+     * @param backup {string} (optional) if the key isn't present, and a backup is given,
+     * just return the backup.
      */
-    get(key: string) : string {
+    get(key: string, backup: string = null) : any {
         if (key in this.keys) {
             return this.keys[key];
         }
         else {
-            return null;
+            return backup;
         }
     }
 

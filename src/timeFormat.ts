@@ -1,4 +1,4 @@
-import * as Moment from 'moment';
+import moment from 'moment';
 
 /**
  * @public
@@ -17,7 +17,7 @@ import * as Moment from 'moment';
  */
 const DATE_FORMAT = 'MMM D, YYYY';
 export function getTimeStampStr(timeStamp: string, exact: boolean) : string {
-    let date = Moment(timeStamp);
+    let date = moment(timeStamp);
     if (!date.isValid()) {
         return null;
     }
@@ -25,7 +25,7 @@ export function getTimeStampStr(timeStamp: string, exact: boolean) : string {
         return date.format(DATE_FORMAT);
     }
     else {
-        if (Math.abs(date.diff(Moment(), 'months', true)) > 4) {
+        if (Math.abs(date.diff(moment(), 'months', true)) > 4) {
             return date.format(DATE_FORMAT);
         }
         else {
