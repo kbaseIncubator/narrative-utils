@@ -3,7 +3,7 @@
 var expect = require('chai').expect;
 const Auth = require('../lib/index.js').Auth;
 const jsdom = require('jsdom');
-var auth_token = 'WBXXXPHELLPKNGYR3REE6K6SWKELE3CV'
+var auth_token = '6CQKPLID5HLKKURMX7NYPORJ6J3T3Z23'
 var auth_user_id = 'tgu2'
 
 describe('Auth test', () => {
