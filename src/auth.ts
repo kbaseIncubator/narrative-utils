@@ -43,7 +43,7 @@ export class Auth {
     config: NarrativeConfig;
 
     /**
-     * The user's auth token and user id.
+     * The user's auth token.
      */
     token: string = null;
 
