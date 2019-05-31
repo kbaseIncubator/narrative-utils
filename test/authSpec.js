@@ -3,8 +3,8 @@
 var expect = require('chai').expect;
 const Auth = require('../lib/index.js').Auth;
 const jsdom = require('jsdom');
-const auth_token = '6CQKPLID5HLKKURMX7NYPORJ6J3T3Z23';
-const auth_user_id = 'tgu2';
+const auth_token = ''; // CI token
+const auth_user_id = '';  // CI token uesr name
 
 describe('Auth test', () => {
     beforeEach(() => {
@@ -44,8 +44,16 @@ describe('Auth test', () => {
     });
 
     it('should get token info when given token', (done) => {
+
+        if(!(Boolean(auth_token) && Boolean(auth_user_id))){
+            console.log('Missing auth_token or auth_user_id');
+            throw 'Missing auth_token or auth_user_id';
+        }
+
         let auth = new Auth();
         expect(auth.token).to.be.null;
+
+
         auth.getTokenInfo(auth_token)
             .then(result => {
                 expect(result).to.have.property('type');
@@ -59,12 +67,15 @@ describe('Auth test', () => {
                 done();
             })
             .catch((err) => {
-                console.log(err);
                 done(new Error('Got an error from the auth server'));
             });
     });
 
     it('should get token info when given cookie', (done) => {
+        if(!(Boolean(auth_token) && Boolean(auth_user_id))){
+            console.log('Missing auth_token or auth_user_id');
+            throw 'Missing auth_token or auth_user_id';
+        }
         document.cookie = 'kbase_session=' + auth_token;
         let auth = new Auth();
         auth.getTokenInfo()
@@ -80,7 +91,6 @@ describe('Auth test', () => {
                 done();
             })
             .catch((err) => {
-                console.log(err);
                 done(new Error('Got an error from the auth server'));
             });
         expect(auth.token).to.equal(auth_token);

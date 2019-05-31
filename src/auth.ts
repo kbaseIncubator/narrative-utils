@@ -119,7 +119,7 @@ export class Auth {
 
         return fetch(call_url, request)
             .then(this.handleFetchErrors)
-            .then(response => response.json())
+            .then(response => response.json());
     }
 
     handleFetchErrors(response: any) {
