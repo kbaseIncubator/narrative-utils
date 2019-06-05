@@ -1,5 +1,5 @@
 export { NarrativeConfig } from './config';
-export { Auth } from './auth';
+export { Auth, TokenInfo, AuthRequestParams, AuthError, AuthErrorInfo } from './auth';
 export { KBaseDynamicServiceClient } from './dynamicServiceClient';
 export { KBaseServiceClient } from './serviceClient';
 export { TimedMap } from './timedMap';
