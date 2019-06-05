@@ -34,6 +34,12 @@ export class AuthError extends Error implements AuthErrorInfo {
     }
 }
 
+export interface AuthRequestParams {
+    operation: string,
+    method: string,
+    version?: string
+}
+
 /**
  * Handles the token-based KBase authentication stuff. An Auth token is fetched from
  * the browser's "kbase_session" cookie (by default - see NarrativeConfig), stored in this object,
@@ -100,21 +106,24 @@ export class Auth {
      * the "method" string should contain all url encoded
      * parameters as expected.
      */
-    makeAuthCall(token: string, callParams: {operation: string, method: string, version?: string}) {
+    makeAuthCall(token: string, callParams: AuthRequestParams) : Promise<any> {
         let version = callParams.version || 'V2';
-        let call_url = [
+        let call_url : RequestInfo = [
                 this.config.urls.auth,
                 '/api/',
                 version,
                 callParams.operation
             ].join('');
 
+        let callHeaders : HeadersInit = {
+            'Accept': 'application/json',
+            'Content-type': 'application/json',
+            'Authorization': token
+        };
+
         let request : RequestInit = {
             method: callParams.method,
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': token
-            },
+            headers: callHeaders,
             mode: 'no-cors'
         };
 
