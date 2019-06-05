@@ -116,14 +116,14 @@ export class Auth {
             ].join('');
 
         let callHeaders : HeadersInit = {
-            'Content-Type': 'application/json',
-            'Authorization': token
+            Accept: 'application/json',
+            Authorization: token
         };
 
         let request : RequestInit = {
             method: callParams.method,
             headers: callHeaders,
-            mode: 'no-cors'
+            mode: 'cors'
         };
 
         return fetch(call_url, request)
