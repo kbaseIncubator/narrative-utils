@@ -40,6 +40,17 @@ export interface AuthRequestParams {
     version?: string
 }
 
+export interface TokenInfo {
+    cachefor: number,
+    created: number,
+    custom: {[key: string]: any},
+    expires: number,
+    id: string,
+    name: string | null,
+    type: string,
+    user: string
+}
+
 /**
  * Handles the token-based KBase authentication stuff. An Auth token is fetched from
  * the browser's "kbase_session" cookie (by default - see NarrativeConfig), stored in this object,
@@ -92,7 +103,7 @@ export class Auth {
      * user - KBase user id
      * cachefor - millis
      */
-    getTokenInfo(token?: string) {
+    getTokenInfo(token?: string): Promise<TokenInfo> {
         return this.makeAuthCall(token ? token : this._getTokenFromCookie(), {
             operation: '/token',
             method: 'GET'

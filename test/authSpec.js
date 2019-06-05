@@ -4,7 +4,7 @@ var expect = require('chai').expect;
 const Auth = require('../lib/index.js').Auth;
 const jsdom = require('jsdom');
 const auth_token = ''; // CI token
-const auth_user_id = '';  // CI token uesr name
+const auth_user_id = '';  // CI token user name
 
 describe('Auth test', () => {
     beforeEach(() => {
