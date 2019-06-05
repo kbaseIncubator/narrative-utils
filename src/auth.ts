@@ -34,6 +34,23 @@ export class AuthError extends Error implements AuthErrorInfo {
     }
 }
 
+export interface AuthRequestParams {
+    operation: string,
+    method: string,
+    version?: string
+}
+
+export interface TokenInfo {
+    cachefor: number,
+    created: number,
+    custom: {[key: string]: any},
+    expires: number,
+    id: string,
+    name: string | null,
+    type: string,
+    user: string
+}
+
 /**
  * Handles the token-based KBase authentication stuff. An Auth token is fetched from
  * the browser's "kbase_session" cookie (by default - see NarrativeConfig), stored in this object,
@@ -86,7 +103,7 @@ export class Auth {
      * user - KBase user id
      * cachefor - millis
      */
-    getTokenInfo(token?: string) {
+    getTokenInfo(token?: string): Promise<TokenInfo> {
         return this.makeAuthCall(token ? token : this._getTokenFromCookie(), {
             operation: '/token',
             method: 'GET'
@@ -100,22 +117,24 @@ export class Auth {
      * the "method" string should contain all url encoded
      * parameters as expected.
      */
-    makeAuthCall(token: string, callParams: {operation: string, method: string, version?: string}) {
+    makeAuthCall(token: string, callParams: AuthRequestParams) : Promise<any> {
         let version = callParams.version || 'V2';
-        let call_url = [
+        let call_url : RequestInfo = [
                 this.config.urls.auth,
                 '/api/',
                 version,
                 callParams.operation
             ].join('');
 
+        let callHeaders : HeadersInit = {
+            Accept: 'application/json',
+            Authorization: token
+        };
+
         let request : RequestInit = {
             method: callParams.method,
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': token
-            },
-            mode: 'no-cors'
+            headers: callHeaders,
+            mode: 'cors'
         };
 
         return fetch(call_url, request)
