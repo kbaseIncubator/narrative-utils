@@ -116,8 +116,7 @@ export class Auth {
             ].join('');
 
         let callHeaders : HeadersInit = {
-            'Accept': 'application/json',
-            'Content-type': 'application/json',
+            'Content-Type': 'application/json',
             'Authorization': token
         };
 
