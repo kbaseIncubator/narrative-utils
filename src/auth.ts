@@ -114,7 +114,8 @@ export class Auth {
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': token
-            }
+            },
+            mode: 'no-cors'
         };
 
         return fetch(call_url, request)
