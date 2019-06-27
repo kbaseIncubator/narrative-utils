@@ -40,6 +40,7 @@ interface IAppInfo {
     id: string;                 // id of the app - module/app_id
     tag: string;                // which tag - release/beta/dev
     version: string;            // should be module version - semantic version
+    iconUrl: string;
 }
 
 interface IAppFsm {
