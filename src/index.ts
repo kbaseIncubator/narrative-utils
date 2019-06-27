@@ -8,4 +8,6 @@ import * as TimeFormat from './timeFormat';
 export { TimeFormat };
 import * as Icon from './icon';
 export { Icon };
-export { AppCellMetadata } from './apps/cellData';
+export { IAppCellMetadata } from './apps/cellData';
+export { ICellMetadata, ICellSettings, ICellAttributes } from './cells/metadata';
+export { IJobState } from './jobs/job';
