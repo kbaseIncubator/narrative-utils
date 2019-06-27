@@ -16,7 +16,7 @@ interface IAppCellInfo {
     exec?: IAppExecInfo;
     fsm: IAppFsm;
     output?: IAppOutput;
-    params: Map<string, any>;   // the app parameters. different for each app
+    params?: Map<string, any>;   // the app parameters. different for each app
     outdated: boolean;          // if true, there's a new version
     newAppName?: string;        // if outdated, the name of the new app
 }
@@ -44,8 +44,8 @@ interface IAppInfo {
 
 interface IAppFsm {
     currentState: {             // tracks the state of the finite state machine
-        mode: string;
-        stage: string;
+        mode?: string;
+        stage?: string;
     }
 }
 
