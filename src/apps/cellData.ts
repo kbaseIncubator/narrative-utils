@@ -8,7 +8,7 @@ import {
 
 export interface IAppCellMetadata extends ICellMetadata {
     appCell: IAppCellInfo;
-    type: 'app';
+    type: string;
 }
 
 interface IAppCellInfo {
