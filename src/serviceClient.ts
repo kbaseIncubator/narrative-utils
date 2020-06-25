@@ -48,7 +48,12 @@ export class KBaseServiceClient extends KBaseJsonRpcClient {
             authorization: this.authToken
         })
         .then((response) => {
-            return response.result[0];
-        });
+            if (response.result && response.result.length) {
+                return response.result[0];
+            }
+            else {
+                return null;
+            }
+    });
     }
 }
