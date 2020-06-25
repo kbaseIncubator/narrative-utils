@@ -1,6 +1,6 @@
 {
   "name": "@kbase/narrative-utils",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Utility modules and functions for the Jupyterlab Narrative",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
